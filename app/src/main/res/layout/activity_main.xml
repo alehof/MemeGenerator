@@ -104,5 +104,14 @@
             app:layout_constraintTop_toBottomOf="@+id/button_save"
             app:srcCompat="@drawable/ic_share" />
 
+        <ImageButton
+            android:id="@+id/button_camera"
+            android:layout_width="159dp"
+            android:layout_height="62dp"
+            android:contentDescription="@string/takePicture"
+            app:srcCompat="@drawable/ic_camera"
+            tools:layout_editor_absoluteX="236dp"
+            tools:layout_editor_absoluteY="653dp" />
+
     </android.support.constraint.ConstraintLayout>
 </layout>
