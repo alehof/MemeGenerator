@@ -1,23 +1,23 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-android {
 
+android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-    // using DataBinding Utility
     dataBinding {
         enabled = true
     }
 
-    defaultConfig {
 
+    defaultConfig {
         applicationId "com.example.memegenerator"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true // needed for the Icons to be resized with vectors
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
