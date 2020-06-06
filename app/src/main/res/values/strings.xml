@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MemeGenerator</string>
+    <string name="app_name">Test</string>
     <string name="title">Meme Generator</string>
     <string name="AdjustMeme">adjustMeme</string>
     <string name="takePicture">TakePicture</string>
