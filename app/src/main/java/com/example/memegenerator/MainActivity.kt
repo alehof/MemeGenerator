@@ -26,9 +26,22 @@ class MainActivity : AppCompatActivity() {
 
         val view = binding.root
         setContentView(view)
-        binding.titleText.text = "Edit textivew Text"
 
+        // Just to know how to set Text.
+       // binding.titleText.text = "Edit textivew Text"
 
+        button_share.setOnClickListener{
+           val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.setType("text/plain")
+            val shareSub :String
+            val shareBody :String
+            shareSub = "Hello Test"
+            shareBody = "Hello Body"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
+            shareIntent.putExtra(Intent.EXTRA_TEXT,shareBody)
+            startActivity(Intent.createChooser(shareIntent, "Share using"))
+
+        }
 
 // CODE FROM https://devofandroid.blogspot.com/2018/09/pick-image-from-gallery-android-studio_15.html
        // For Retrieving Image from Gallery with Permission Checks.
