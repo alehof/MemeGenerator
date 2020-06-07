@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.Cursor
+import android.graphics.Bitmap
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     // See if we have permission or not
     private fun prepTakePhoto() {
 
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this!!,Manifest.permission.CAMERA) == PERMISSION_GRANTED) {
             takePhoto()
         } else {
             val permissionRequest = arrayOf(Manifest.permission.CAMERA) // asking for camera permission, it can accept more than 1 permission at once that's why its in an array
@@ -87,10 +89,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun takePhoto() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         // on this new intent, also apply the things I stated
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{
-                takePictureIntent -> takePictureIntent.resolveActivity(this.packageManager)?.also {
+                takePictureIntent -> takePictureIntent.resolveActivity(this!!.packageManager)?.also {
             startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
         }
         }
@@ -118,8 +119,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
-                    PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED){
                     //permission from popup granted
                     pickImageFromGallery()
                 }
@@ -130,8 +130,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             CAMERA_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted, let's do stuff
+                if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
+                    // permission granted, let's take a photo then
                     takePhoto()
                 } else {
                     Toast.makeText(this, "Unable to take photo without permission",Toast.LENGTH_SHORT).show()
@@ -141,9 +141,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     //handle result of picked image  - so the URI is loaded into the view_meme placeholder
+    // THIS IS the callback function from external of the app
+    // resultCode represents what the user selected,
+    // the Data parameter is the one we use
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             view_meme.setImageURI(data?.data)
+        }
+        if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_REQUEST_CODE){
+            val imageBitmap = data!!.extras!!.get("data") as Bitmap // typecasting in  kotlin "as"
+            view_meme.setImageBitmap(imageBitmap)
         }
     }
 }
