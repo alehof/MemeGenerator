@@ -6,23 +6,36 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.Cursor
+//import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+//import android.support.annotation.RequiresApi
+//import android.support.v4.content.ContextCompat
+//import android.support.v7.app.AppCompatActivity
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.widget.Button
+import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +44,31 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
+        //Data binding for nav drawer
+        //drawerLayout = binding.drawerLayout
+
+        //val navController = this.findNavController(R.id.myNavHostFragment)
+        //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        //NavigationUI.setupWithNavController(binding.navView, navController)
+
+
         // Just to know how to set Text.
         // binding.titleText.text = "Edit textivew Text"
+
+        //the optionsmenu wip
+        button_settings.setOnClickListener{
+           val popup = PopupMenu(this, button_settings)
+            popup.inflate(R.menu.popup_menu)
+            popup.setOnMenuItemClickListener{
+                Toast.makeText(this, "Item:" +it.title,Toast.LENGTH_SHORT).show()
+                true
+            }
+            popup.show()
+
+        }
+
+
+
 
         button_share.setOnClickListener{
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -73,8 +109,10 @@ class MainActivity : AppCompatActivity() {
                 pickImageFromGallery()
             }
         }
+
     }
     // See if we have permission or not
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun prepTakePhoto() {
 
         if (ContextCompat.checkSelfPermission(this!!,Manifest.permission.CAMERA) == PERMISSION_GRANTED) {
@@ -84,7 +122,6 @@ class MainActivity : AppCompatActivity() {
             requestPermissions(permissionRequest,CAMERA_PERMISSION_REQUEST_CODE)
         }
     }
-
 
 
 
@@ -154,4 +191,5 @@ class MainActivity : AppCompatActivity() {
             view_meme.setImageBitmap(imageBitmap)
         }
     }
+
 }

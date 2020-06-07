@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Users/alehof/AppData/Local/JetBrains/Toolbox/apps/AndroidStudio/ch-0/192.6308749/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/D:/Androidstudio/plugins/android/lib/android.jar!/images/material_design_icons/hardware/ic_device_hub_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -58,7 +58,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_share" />
+                                      <entry key="outputName" value="ic_settings" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="3498db" />
                                     </map>

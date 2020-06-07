@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,17 +45,6 @@
             app:srcCompat="@drawable/ic_undo" />
 
         <ImageButton
-            android:id="@+id/button_camera"
-            style="@style/ButtonStyle"
-            android:layout_width="159dp"
-            android:layout_height="62dp"
-            android:contentDescription="@string/takePicture"
-            app:layout_constraintBottom_toTopOf="@+id/button_undo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            app:srcCompat="@drawable/ic_camera" />
-
-        <ImageButton
             android:id="@+id/button_save"
             style="@style/ButtonStyle"
             android:layout_width="102dp"
@@ -89,5 +81,49 @@
             app:layout_constraintTop_toTopOf="@+id/button_save"
             app:srcCompat="@drawable/ic_share" />
 
+        <!-- This is the NavHostFragment within the activity_main layout
+   It needs to know which navigation graph resource to use,
+   so add the app:navGraph attribute and have it point to the
+   navigation graph resource - @navigation/navigation. -->
+
+        <ImageButton
+            android:id="@+id/button_camera"
+            style="@style/ButtonStyle"
+            android:layout_width="159dp"
+            android:layout_height="62dp"
+            android:contentDescription="@string/takePicture"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            app:srcCompat="@drawable/ic_camera" />
+
+        <ImageButton
+            android:id="@+id/button_settings"
+            style="@style/ButtonStyle"
+            android:layout_width="159dp"
+            android:layout_height="62dp"
+            android:contentDescription="@string/button_settings"
+            app:layout_constraintBottom_toBottomOf="@+id/button_share"
+            app:layout_constraintStart_toStartOf="@+id/frameLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_setupp" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+<!--
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                app:menu="@menu/navdrawer_menue"
+                app:headerLayout="@layout/nav_header"/>
+            //Takes care of Layout of our nav Drawer, more details in layout/nav_hader.xml
+        </androidx.drawerlayout.widget.DrawerLayout>
+                                                         -->
 </layout>
