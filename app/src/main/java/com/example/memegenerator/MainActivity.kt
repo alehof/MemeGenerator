@@ -106,3 +106,4 @@ class MainActivity : AppCompatActivity() {
     }
 }
 //DSDS
+//To do implement Navbar with different functions for text sice etc...
