@@ -5,12 +5,14 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.example.memegenerator.databinding.ActivityMainBinding
@@ -28,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         // Just to know how to set Text.
-       // binding.titleText.text = "Edit textivew Text"
+        // binding.titleText.text = "Edit textivew Text"
 
         button_share.setOnClickListener{
-           val shareIntent = Intent(Intent.ACTION_SEND)
+            val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.setType("text/plain")
             val shareSub :String
             val shareBody :String
@@ -43,27 +45,54 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        button_camera.setOnClickListener{
+            prepTakePhoto()
+        }
+
 // CODE FROM https://devofandroid.blogspot.com/2018/09/pick-image-from-gallery-android-studio_15.html
-       // For Retrieving Image from Gallery with Permission Checks.
+        // For Retrieving Image from Gallery with Permission Checks.
         button_open.setOnClickListener {
             //check runtime permission
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_DENIED){
                     //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
                     //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+                    requestPermissions(permissions, PERMISSION_CODE)
                 }
                 else{
                     //permission already granted
-                    pickImageFromGallery();
+                    pickImageFromGallery()
                 }
             }
             else{
                 //system OS is < Marshmallow
-                pickImageFromGallery();
+                pickImageFromGallery()
             }
+        }
+    }
+    // See if we have permission or not
+    private fun prepTakePhoto() {
+
+        if (ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            takePhoto()
+        } else {
+            val permissionRequest = arrayOf(Manifest.permission.CAMERA) // asking for camera permission, it can accept more than 1 permission at once that's why its in an array
+            requestPermissions(permissionRequest,CAMERA_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+
+
+
+    private fun takePhoto() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // on this new intent, also apply the things I stated
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{
+                takePictureIntent -> takePictureIntent.resolveActivity(this.packageManager)?.also {
+            startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+        }
         }
     }
 
@@ -76,9 +105,13 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         //image pick code
-        private val IMAGE_PICK_CODE = 1000;
+        private val IMAGE_PICK_CODE = 1000
         //Permission code
-        private val PERMISSION_CODE = 1001;
+        private val PERMISSION_CODE = 1001
+
+        private val CAMERA_PERMISSION_REQUEST_CODE = 2000
+
+        private val CAMERA_REQUEST_CODE = 2001
     }
 
     //handle requested permission result
@@ -95,6 +128,15 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            CAMERA_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission granted, let's do stuff
+                    takePhoto()
+                } else {
+                    Toast.makeText(this, "Unable to take photo without permission",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -105,4 +147,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-//DSDS

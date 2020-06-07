@@ -3,5 +3,9 @@
     <string name="title">Meme Generator</string>
     <string name="AdjustMeme">adjustMeme</string>
     <string name="takePicture">TakePicture</string>
+    <string name="button_undo">Undo</string>
+    <string name="button_save">Save</string>
+    <string name="button_open">Open</string>
+    <string name="button_share">Share</string>
 
 </resources>
