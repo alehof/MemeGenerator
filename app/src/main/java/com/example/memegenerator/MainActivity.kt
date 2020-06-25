@@ -2,6 +2,7 @@ package com.example.memegenerator
 
 import android.Manifest
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -20,9 +21,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
-import android.widget.Button
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,6 +35,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+    //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
+    lateinit var TextView1: TextView
+    lateinit var TextView2: TextView
+    lateinit var EditText1: EditText
+    lateinit var EditText2: EditText
+    lateinit var view_meme: ImageView
+    lateinit var textup: ClipData.Item
+    lateinit var textdown: ClipData.Item
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,25 +59,6 @@ class MainActivity : AppCompatActivity() {
         //val navController = this.findNavController(R.id.myNavHostFragment)
         //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         //NavigationUI.setupWithNavController(binding.navView, navController)
-
-
-        // Just to know how to set Text.
-        // binding.titleText.text = "Edit textivew Text"
-
-        //the optionsmenu wip
-        button_settings.setOnClickListener{
-           val popup = PopupMenu(this, button_settings)
-            popup.inflate(R.menu.popup_menu)
-            popup.setOnMenuItemClickListener{
-                Toast.makeText(this, "Item:" +it.title,Toast.LENGTH_SHORT).show()
-                true
-            }
-            popup.show()
-
-        }
-
-
-
 
         button_share.setOnClickListener{
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -110,7 +100,46 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // For the Text on the meme-----------------------------------------------------------------------Tutorial mihn 15:00 Ich will den Button mit den Textviews verbinden, also quasi untermenues für größe, Farbe, ober und untertext-------------------->
+      //  TextView1 = findViewById(R.id.TextView1) as TextView
+      //  TextView2 = findViewById(R.id.TextView2) as TextView
+
+       // EditText1 = findViewById(R.id.EditText1) as EditText
+       // EditText2 = findViewById(R.id.EditText2) as EditText
+
+        //textup = findViewById(R.id.textup) as Button
+       // textdown = findViewById(R.id.textdown) as Button
+        //-- ------------------------------------------------------------------------------------- -->
+        //the optionsmenu wip
+       //button_settings.setOnClickListener(){
+           // var input = EditText1.text
+        //    Toast.makeText(this, EditText1.text, Toast.LENGTH_LONG).show()
+      // }
+
+       // textdown.setOnClickListener(){
+            //EditText2.setText(textdown.getText().toString());
+
+          //  textdown.setText("");
+      //  }
+           // -----------------------------------------------------------------------------------------
+        // Just to know how to set Text.
+        // binding.titleText.text = "Edit textivew Text"
+
+        //the optionsmenu wip
+     //   button_settings.setOnClickListener{
+         //   val popup = PopupMenu(this, button_settings)
+         //   popup.inflate(R.menu.popup_menu)
+           // popup.setOnMenuItemClickListener{
+                //Toast.makeText(this, "Item:" +it.title,Toast.LENGTH_SHORT).show()
+               // true
+
+                // }
+           // popup.show()
+
+       // }
+
     }
+
     // See if we have permission or not
     @RequiresApi(Build.VERSION_CODES.M)
     private fun prepTakePhoto() {
