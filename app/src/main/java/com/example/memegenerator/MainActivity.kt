@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
-     lateinit var editText1: EditText
-     lateinit var view_meme: ImageView
+   // private lateinit var editText1: EditText
+    private  lateinit var view_meme: ImageView
 
 
 
@@ -104,18 +104,17 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
                 pickImageFromGallery()
             }
         }
-       /*
+
        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
         //the optionsmenu For Color and Text
         button_settings.setOnClickListener {
             val popup1 = PopupMenu(this, button_settings)
-           /* val popup2 = PopupMenu(this, button_settings)*/
+            val popup2 = PopupMenu(this, button_settings)
 
             //Inflating the Popup using xml file
             popup1.menuInflater.inflate(R.menu.button_size, popup1.menu)
-           /* popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)*/
+            popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)
 
-            popup1.inflate(R.menu.button_size)
             popup1.setOnMenuItemClickListener {
                 if (it.itemId == R.id.size1) {
                     changeSize1()
@@ -127,8 +126,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
                     changeSize4()
                 }
                 true
-            /*}
-            popup2.inflate(R.menu.button_color)
+            }
             popup2.setOnMenuItemClickListener {
                 if (it.itemId == R.id.color1) {
                     changeColor1()
@@ -139,63 +137,55 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
                 } else if (it.itemId == R.id.color4) {
                     changeColor4()
                 }
-                true */
+                true
             }
             popup1.show()
-           /* popup2.show()*/
-        }*/
+            popup2.show()
+        }
 
     }
-    /*
+
     //Function to change color of Text----------------------------------------------------!!!!!!!!!!!!!!------------------------------------------
-    @SuppressLint("ResourceType")
     private fun changeColor1(){
-        val editText1: EditText = findViewById(R.id.editText1)
-        editText1.setTextColor(getColorStateList(Color.WHITE))
+        //val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(Color.WHITE)
     }
-    @SuppressLint("ResourceType")
     private fun changeColor2(){
-        val editText1: EditText = findViewById(R.id.editText1)
-        editText1.setTextColor(getColorStateList(Color.BLACK))
+       // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(Color.BLACK)
 
     }
-    @SuppressLint("ResourceType")
     private fun changeColor3(){
-        val editText1: EditText = findViewById(R.id.editText1)
-        editText1.setTextColor(getColorStateList(Color.GREEN))
+      //  val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(Color.GREEN)
 
     }
-    @SuppressLint("ResourceType")
     private fun changeColor4(){
-        val editText1: EditText = findViewById(R.id.editText1)
-        editText1.setTextColor(getColorStateList(Color.BLUE))
+      //  val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(Color.BLUE)
 
     }
     //Now for the Sizes:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    @SuppressLint("ResourceType")
     private fun changeSize1(){
-        val editText1: EditText = findViewById(R.id.editText1)
+       // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(10F)
     }
-    @SuppressLint("ResourceType")
     private fun changeSize2(){
-        val editText1: EditText = findViewById(R.id.editText1)
+       // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(20F)
 
     }
-    @SuppressLint("ResourceType")
     private fun changeSize3(){
-        val editText1: EditText = findViewById(R.id.editText1)
+        //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(30F)
 
     }
-    @SuppressLint("ResourceType")
     private fun changeSize4(){
-        val editText1: EditText = findViewById(R.id.editText1)
+       // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
 
     }
-   */
+
    //Override with specific Listeners for Touchscreen Text-----------------------------------------
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setListeners() {
