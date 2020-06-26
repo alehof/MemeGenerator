@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/size1"
+        android:title="one"
+        />
+
+    <item
+        android:id="@+id/size2"
+        android:title="two"
+        />
+
+    <item
+        android:id="@+id/size3"
+        android:title="three"
+        />
+
+    <item
+        android:id="@+id/size4"
+        android:title="four"
+        />
+
+</menu>

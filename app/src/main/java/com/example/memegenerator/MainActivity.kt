@@ -1,26 +1,31 @@
 package com.example.memegenerator
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.Cursor
 //import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.graphics.Color
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
+import android.view.*
 //import android.support.annotation.RequiresApi
 //import android.support.v4.content.ContextCompat
 //import android.support.v7.app.AppCompatActivity
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
-import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -29,29 +34,30 @@ import androidx.navigation.ui.NavigationUI
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
-
-class MainActivity : AppCompatActivity() {
+//Initialize Listeners-------------------------------------------------------------
+class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
+    //Initialize TAG-----------------------------------------------
+    private val TAG = MainActivity::class.java.simpleName
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
-    lateinit var TextView1: TextView
-    lateinit var TextView2: TextView
-    lateinit var EditText1: EditText
-    lateinit var EditText2: EditText
-    lateinit var view_meme: ImageView
-    lateinit var textup: ClipData.Item
-    lateinit var textdown: ClipData.Item
+     lateinit var editText1: EditText
+     lateinit var view_meme: ImageView
 
 
 
+
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
         val view = binding.root
         setContentView(view)
+        //Set Listeners for Touchscreen Text---------------------------------------
+        setListeners()
 
         //Data binding for nav drawer
         //drawerLayout = binding.drawerLayout
@@ -60,20 +66,20 @@ class MainActivity : AppCompatActivity() {
         //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         //NavigationUI.setupWithNavController(binding.navView, navController)
 
-        button_share.setOnClickListener{
+        button_share.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.setType("text/plain")
-            val shareSub :String
-            val shareBody :String
+            val shareSub: String
+            val shareBody: String
             shareSub = "Hello Test"
             shareBody = "Hello Body"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
-            shareIntent.putExtra(Intent.EXTRA_TEXT,shareBody)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
             startActivity(Intent.createChooser(shareIntent, "Share using"))
 
         }
 
-        button_camera.setOnClickListener{
+        button_camera.setOnClickListener {
             prepTakePhoto()
         }
 
@@ -81,64 +87,234 @@ class MainActivity : AppCompatActivity() {
         // For Retrieving Image from Gallery with Permission Checks.
         button_open.setOnClickListener {
             //check runtime permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_DENIED){
+                    PackageManager.PERMISSION_DENIED
+                ) {
                     //permission denied
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
                     //show popup to request runtime permission
                     requestPermissions(permissions, PERMISSION_CODE)
-                }
-                else{
+                } else {
                     //permission already granted
                     pickImageFromGallery()
                 }
-            }
-            else{
+            } else {
                 //system OS is < Marshmallow
                 pickImageFromGallery()
             }
         }
+       /*
+       //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //the optionsmenu For Color and Text
+        button_settings.setOnClickListener {
+            val popup1 = PopupMenu(this, button_settings)
+           /* val popup2 = PopupMenu(this, button_settings)*/
 
-        // For the Text on the meme-----------------------------------------------------------------------Tutorial mihn 15:00 Ich will den Button mit den Textviews verbinden, also quasi untermenues für größe, Farbe, ober und untertext-------------------->
-      //  TextView1 = findViewById(R.id.TextView1) as TextView
-      //  TextView2 = findViewById(R.id.TextView2) as TextView
+            //Inflating the Popup using xml file
+            popup1.menuInflater.inflate(R.menu.button_size, popup1.menu)
+           /* popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)*/
 
-       // EditText1 = findViewById(R.id.EditText1) as EditText
-       // EditText2 = findViewById(R.id.EditText2) as EditText
-
-        //textup = findViewById(R.id.textup) as Button
-       // textdown = findViewById(R.id.textdown) as Button
-        //-- ------------------------------------------------------------------------------------- -->
-        //the optionsmenu wip
-       //button_settings.setOnClickListener(){
-           // var input = EditText1.text
-        //    Toast.makeText(this, EditText1.text, Toast.LENGTH_LONG).show()
-      // }
-
-       // textdown.setOnClickListener(){
-            //EditText2.setText(textdown.getText().toString());
-
-          //  textdown.setText("");
-      //  }
-           // -----------------------------------------------------------------------------------------
-        // Just to know how to set Text.
-        // binding.titleText.text = "Edit textivew Text"
-
-        //the optionsmenu wip
-     //   button_settings.setOnClickListener{
-         //   val popup = PopupMenu(this, button_settings)
-         //   popup.inflate(R.menu.popup_menu)
-           // popup.setOnMenuItemClickListener{
-                //Toast.makeText(this, "Item:" +it.title,Toast.LENGTH_SHORT).show()
-               // true
-
-                // }
-           // popup.show()
-
-       // }
+            popup1.inflate(R.menu.button_size)
+            popup1.setOnMenuItemClickListener {
+                if (it.itemId == R.id.size1) {
+                    changeSize1()
+                } else if (it.itemId == R.id.size2) {
+                    changeSize2()
+                } else if (it.itemId == R.id.size3) {
+                    changeSize3()
+                } else if (it.itemId == R.id.size4) {
+                    changeSize4()
+                }
+                true
+            /*}
+            popup2.inflate(R.menu.button_color)
+            popup2.setOnMenuItemClickListener {
+                if (it.itemId == R.id.color1) {
+                    changeColor1()
+                } else if (it.itemId == R.id.color2) {
+                    changeColor2()
+                } else if (it.itemId == R.id.color3) {
+                    changeColor3()
+                } else if (it.itemId == R.id.color4) {
+                    changeColor4()
+                }
+                true */
+            }
+            popup1.show()
+           /* popup2.show()*/
+        }*/
 
     }
+    /*
+    //Function to change color of Text----------------------------------------------------!!!!!!!!!!!!!!------------------------------------------
+    @SuppressLint("ResourceType")
+    private fun changeColor1(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(getColorStateList(Color.WHITE))
+    }
+    @SuppressLint("ResourceType")
+    private fun changeColor2(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(getColorStateList(Color.BLACK))
+
+    }
+    @SuppressLint("ResourceType")
+    private fun changeColor3(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(getColorStateList(Color.GREEN))
+
+    }
+    @SuppressLint("ResourceType")
+    private fun changeColor4(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextColor(getColorStateList(Color.BLUE))
+
+    }
+    //Now for the Sizes:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @SuppressLint("ResourceType")
+    private fun changeSize1(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextSize(10F)
+    }
+    @SuppressLint("ResourceType")
+    private fun changeSize2(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextSize(20F)
+
+    }
+    @SuppressLint("ResourceType")
+    private fun changeSize3(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextSize(30F)
+
+    }
+    @SuppressLint("ResourceType")
+    private fun changeSize4(){
+        val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTextSize(40F)
+
+    }
+   */
+   //Override with specific Listeners for Touchscreen Text-----------------------------------------
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun setListeners() {
+
+        ll_pinklayout.setOnLongClickListener {
+            val data = ClipData.newPlainText("", "")
+            val shadowBuilder = View.DragShadowBuilder(ll_pinklayout)
+           ll_pinklayout.startDragAndDrop(data, shadowBuilder, ll_pinklayout, 0)
+            true
+        }
+
+        editText1.setOnLongClickListener {
+            val data = ClipData.newPlainText("", "")
+            val shadowBuilder = View.DragShadowBuilder(editText1)
+            editText1.startDragAndDrop(data, shadowBuilder, editText1, 0)
+            true
+        }
+
+        ll_pinklayout.setOnDragListener(dragListener)
+
+    }
+
+    override fun onDrag(view:View, dragEvent: DragEvent):Boolean {
+        Log.d(TAG, "onDrag: view->$view\n DragEvent$dragEvent")
+        when (dragEvent.action) {
+            DragEvent.ACTION_DRAG_ENDED -> {
+                Log.d(TAG, "onDrag: ACTION_DRAG_ENDED ")
+                return true
+            }
+            DragEvent.ACTION_DRAG_EXITED -> {
+                Log.d(TAG, "onDrag: ACTION_DRAG_EXITED")
+                return true
+            }
+            DragEvent.ACTION_DRAG_ENTERED -> {
+                Log.d(TAG, "onDrag: ACTION_DRAG_ENTERED")
+                return true
+            }
+            DragEvent.ACTION_DRAG_STARTED -> {
+                Log.d(TAG, "onDrag: ACTION_DRAG_STARTED")
+                return true
+            }
+            DragEvent.ACTION_DROP -> {
+                Log.d(TAG, "onDrag: ACTION_DROP")
+                val tvState = dragEvent.localState as View
+                Log.d(TAG, "onDrag:viewX" + dragEvent.x + "viewY" + dragEvent.y)
+                Log.d(TAG, "onDrag: Owner->" + tvState.parent)
+                val tvParent = tvState.parent as ViewGroup
+                tvParent.removeView(tvState)
+                val container = view as LinearLayout
+                container.addView(tvState)
+                tvParent.removeView(tvState)
+                tvState.x = dragEvent.x
+                tvState.y = dragEvent.y
+                view.addView(tvState)
+                view.setVisibility(View.VISIBLE)
+                return true
+            }
+            DragEvent.ACTION_DRAG_LOCATION -> {
+                Log.d(TAG, "onDrag: ACTION_DRAG_LOCATION")
+                return true
+            }
+            else -> return false
+        }
+    }
+    override fun onTouch(view:View, motionEvent: MotionEvent):Boolean {
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        return true
+
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        val dragShadowBuilder = View.DragShadowBuilder(v)
+        v?.startDrag(null, dragShadowBuilder, v, 0)
+        true
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private val dragListener = View.OnDragListener {
+            view, event ->
+        val tag = "Drag and drop"
+        event?.let {
+            when (event.action) {
+                DragEvent.ACTION_DRAG_STARTED -> {
+                    Log.d(tag, "ACTION_DRAG_STARTED")
+                }
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    Log.d(tag, "ACTION_DRAG_ENDED")
+                }
+                DragEvent.ACTION_DRAG_ENTERED -> {
+                    Log.d(tag, "ACTION_DRAG_ENDED")
+                }
+                DragEvent.ACTION_DRAG_EXITED -> {
+                    Log.d(tag, "ACTION_DRAG_ENDED")
+                }
+                DragEvent.ACTION_DROP -> {
+                    Log.d(tag, "ACTION_DROP")
+                    val tvState = event.localState as View
+                    Log.d(TAG, "onDrag:viewX" + event.x + "viewY" + event.y)
+                    Log.d(TAG, "onDrag: Owner->" + tvState.parent)
+                    val tvParent = tvState.parent as ViewGroup
+                    tvParent.removeView(tvState)
+                    val container = view as LinearLayout
+                    container.addView(tvState)
+                    tvParent.removeView(tvState)
+                    tvState.x = event.x
+                    tvState.y = event.y
+                    view.addView(tvState)
+                    view.setVisibility(View.VISIBLE)
+                }
+                else -> {
+                    Log.d(tag, "ACTION_DRAG_ ELSE ...")
+                }
+            }
+        }
+        true
+    }
+
 
     // See if we have permission or not
     @RequiresApi(Build.VERSION_CODES.M)
