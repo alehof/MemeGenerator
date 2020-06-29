@@ -60,6 +60,18 @@
                     android:textSize="40sp"
 
                     android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/view_Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="VIEW" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
             </LinearLayout>
             <!-- TODO Get Text Size and color customizable via a menue-->
 

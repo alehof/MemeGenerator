@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -33,6 +34,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.*
 
 //Initialize Listeners-------------------------------------------------------------
 class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
@@ -47,6 +49,25 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
    // private lateinit var editText1: EditText
     private  lateinit var view_meme: ImageView
 
+    // SToring a file
+    private  val filepath ="MyFILESTORAGE"
+    internal var myExternalFile: File?=null
+    private val isExternalStorageReadOnly: Boolean get() {
+        val extStorageState = Environment.getExternalStorageState()
+        return if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
+            true
+        }else {
+            false
+        }
+    }
+    private val isExternalStorageAvailable: Boolean get() {
+        val extStorageState = Environment.getExternalStorageState()
+        return if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
+            true
+        } else{
+            false
+        }
+    }
 
 
 
@@ -65,6 +86,50 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         //val navController = this.findNavController(R.id.myNavHostFragment)
         //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         //NavigationUI.setupWithNavController(binding.navView, navController)
+
+        val fileName = "testfile"
+        val fileData = findViewById(R.id.editText1) as EditText
+
+        // store a FILE value this time we store editText1.text next time we'll store the world
+        button_save.setOnClickListener(View.OnClickListener {
+            myExternalFile = File(getExternalFilesDir(filepath), fileName)
+            try {
+                val fileOutPutStream = FileOutputStream(myExternalFile)
+                fileOutPutStream.write(fileData.text.toString().toByteArray())
+                fileOutPutStream.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            Toast.makeText(applicationContext,"data save",Toast.LENGTH_SHORT).show()
+        })
+        if (!isExternalStorageAvailable || isExternalStorageReadOnly) {
+            button_save.isEnabled = false
+        }
+
+        view_Button.setOnClickListener(View.OnClickListener {
+            myExternalFile = File(getExternalFilesDir(filepath), editText1.text.toString())
+
+            val filename = fileName
+            myExternalFile = File(getExternalFilesDir(filepath),filename)
+            if(filename.toString()!=null && filename.toString().trim()!=""){
+                var fileInputStream = FileInputStream(myExternalFile)
+                var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+                val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+                val stringBuilder: StringBuilder = StringBuilder()
+                var text: String? = null
+                while ({ text = bufferedReader.readLine(); text }() != null) {
+                    stringBuilder.append(text)
+                }
+                fileInputStream.close()
+                //Displaying data on EditText
+                Toast.makeText(applicationContext,stringBuilder.toString(),Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
+
+
 
         button_share.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
