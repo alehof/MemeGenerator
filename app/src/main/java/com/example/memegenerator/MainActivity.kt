@@ -12,6 +12,7 @@ import android.database.Cursor
 //import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Typeface
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
@@ -110,10 +111,13 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         button_settings.setOnClickListener {
             val popup1 = PopupMenu(this, button_settings)
             val popup2 = PopupMenu(this, button_settings)
+            val popup3 = PopupMenu(this, button_settings)
 
             //Inflating the Popup using xml file
             popup1.menuInflater.inflate(R.menu.button_size, popup1.menu)
             popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)
+            popup3.menuInflater.inflate(R.menu.button_text, popup3.menu)
+
 
             popup1.setOnMenuItemClickListener {
                 if (it.itemId == R.id.size1) {
@@ -139,8 +143,22 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
                 }
                 true
             }
+            popup3.setOnMenuItemClickListener {
+                if (it.itemId == R.id.text1) {
+                    changeFont1()
+                } else if (it.itemId == R.id.text2) {
+                    changeFont2()
+                } else if (it.itemId == R.id.text3) {
+                    changeFont3()
+                } else if (it.itemId == R.id.text4) {
+                    changeFont4()
+                }
+                true
+            }
             popup1.show()
             popup2.show()
+            popup3.show()
+
         }
 
     }
@@ -193,6 +211,31 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
         editText2.setTextSize(40F)
+
+    }
+    //Now the fonts:---------------------------------------------------------------------------------------------------
+    private fun changeFont1(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.DEFAULT)
+        editText2.setTypeface(Typeface.DEFAULT)
+
+    }
+    private fun changeFont2(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.SERIF)
+        editText2.setTypeface(Typeface.SERIF)
+
+    }
+    private fun changeFont3(){
+        //val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.DEFAULT_BOLD)
+        editText2.setTypeface(Typeface.DEFAULT_BOLD)
+
+    }
+    private fun changeFont4(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.MONOSPACE)
+        editText2.setTypeface(Typeface.MONOSPACE)
 
     }
 

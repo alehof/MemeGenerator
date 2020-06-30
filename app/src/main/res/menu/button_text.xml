@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/text1"
+        android:title="default"
+
+        />
+
+    <item
+        android:id="@+id/text2"
+        android:title="serif"
+        />
+
+    <item
+        android:id="@+id/text3"
+        android:title="default_bold"
+        />
+
+    <item
+        android:id="@+id/text4"
+        android:title="monospace"
+        />
+
+</menu>
