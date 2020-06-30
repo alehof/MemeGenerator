@@ -144,45 +144,55 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
 
     }
-
+    //TODO: Fonts zum Ändern hinzufügen, 2tes Edit Text, Verhalten wenn App geschlossen wird(States sichern...Aubout ME schreiben+Readme)//Sharen, Speicherfunktionen, Layout optimieren, Meme Templates einfügen--------------------------------------------------------------------------------------------
     //Function to change color of Text----------------------------------------------------!!!!!!!!!!!!!!------------------------------------------
     private fun changeColor1(){
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.WHITE)
+        editText2.setTextColor(Color.WHITE)
+
     }
     private fun changeColor2(){
        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLACK)
+        editText2.setTextColor(Color.BLACK)
 
     }
     private fun changeColor3(){
       //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.GREEN)
+        editText2.setTextColor(Color.GREEN)
 
     }
     private fun changeColor4(){
       //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLUE)
+        editText2.setTextColor(Color.BLUE)
 
     }
     //Now for the Sizes:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private fun changeSize1(){
        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(10F)
+        editText2.setTextSize(10F)
+
     }
     private fun changeSize2(){
        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(20F)
+        editText2.setTextSize(20F)
 
     }
     private fun changeSize3(){
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(30F)
+        editText2.setTextSize(30F)
 
     }
     private fun changeSize4(){
        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
+        editText2.setTextSize(40F)
 
     }
 
@@ -203,6 +213,14 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             editText1.startDragAndDrop(data, shadowBuilder, editText1, 0)
             true
         }
+
+       //Edit text2
+       editText2.setOnLongClickListener {
+           val data = ClipData.newPlainText("", "")
+           val shadowBuilder = View.DragShadowBuilder(editText2)
+           editText2.startDragAndDrop(data, shadowBuilder, editText2, 0)
+           true
+       }
 
         ll_pinklayout.setOnDragListener(dragListener)
 
