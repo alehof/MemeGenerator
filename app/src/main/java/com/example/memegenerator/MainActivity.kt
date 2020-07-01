@@ -46,18 +46,11 @@ import java.util.*
 class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
     //Initialize TAG-----------------------------------------------
     private val TAG = MainActivity::class.java.simpleName
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
    // private lateinit var editText1: EditText
-
-
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,15 +91,20 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
 
         button_share.setOnClickListener {
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.setType("text/plain")
-            val shareSub: String
-            val shareBody: String
-            shareSub = "Hello Test"
-            shareBody = "Hello Body"
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSub)
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody)
-            startActivity(Intent.createChooser(shareIntent, "Share using"))
+
+
+            val path = view_meme.getTag().toString()
+
+            val text = "Look at my meme dude";
+            val  pictureUri = Uri.parse(path);
+            val shareIntent = Intent()
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, pictureUri);
+            shareIntent.setType("image/*");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(shareIntent, "Share images..."));
+
 
         }
 
@@ -148,7 +146,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)
             popup3.menuInflater.inflate(R.menu.button_text, popup3.menu)
 
-
             popup1.setOnMenuItemClickListener {
                 if (it.itemId == R.id.size1) {
                     changeSize1()
@@ -187,10 +184,10 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             }
             popup1.show()
             popup2.show()
+            popup3.show()
         }
 
     }
-
     private fun saveImage(bitmap: Bitmap):Uri {
          val root_of_directory = getApplicationInfo().dataDir
         val file = File(root_of_directory, "${UUID.randomUUID()}.jpg")
@@ -211,8 +208,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         return Uri.parse(file.absolutePath)
     }
-
-
     // Store inside app done.
     private fun viewToBitmap(view: View, width: Int, height: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -257,8 +252,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         // Return the saved image uri
         return Uri.parse(file.absolutePath)
     }
-    }
-    //TODO: Fonts zum Ändern hinzufügen, 2tes Edit Text, Verhalten wenn App geschlossen wird(States sichern...Aubout ME schreiben+Readme)//Sharen, Speicherfunktionen, Layout optimieren, Meme Templates einfügen--------------------------------------------------------------------------------------------
     //Function to change color of Text----------------------------------------------------!!!!!!!!!!!!!!------------------------------------------
     private fun changeColor1(){
         //val editText1: EditText = findViewById(R.id.editText1)
@@ -267,32 +260,32 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     }
     private fun changeColor2(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLACK)
         editText2.setTextColor(Color.BLACK)
 
     }
     private fun changeColor3(){
-      //  val editText1: EditText = findViewById(R.id.editText1)
+        //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.GREEN)
         editText2.setTextColor(Color.GREEN)
 
     }
     private fun changeColor4(){
-      //  val editText1: EditText = findViewById(R.id.editText1)
+        //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLUE)
         editText2.setTextColor(Color.BLUE)
 
     }
     //Now for the Sizes:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private fun changeSize1(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(10F)
         editText2.setTextSize(10F)
 
     }
     private fun changeSize2(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(20F)
         editText2.setTextSize(20F)
 
@@ -304,11 +297,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     }
     private fun changeSize4(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
         editText2.setTextSize(40F)
 
     }
+
     //Now the fonts:---------------------------------------------------------------------------------------------------
     private fun changeFont1(){
         // val editText1: EditText = findViewById(R.id.editText1)
@@ -335,6 +329,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     }
 
+
    //Override with specific Listeners for Touchscreen Text-----------------------------------------
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setListeners() {
@@ -352,8 +347,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             editText1.startDragAndDrop(data, shadowBuilder, editText1, 0)
             true
         }
-
-       //Edit text2
        editText2.setOnLongClickListener {
            val data = ClipData.newPlainText("", "")
            val shadowBuilder = View.DragShadowBuilder(editText2)
@@ -364,7 +357,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         ll_pinklayout.setOnDragListener(dragListener)
 
     }
-
     override fun onDrag(view:View, dragEvent: DragEvent):Boolean {
         Log.d(TAG, "onDrag: view->$view\n DragEvent$dragEvent")
         when (dragEvent.action) {
@@ -414,14 +406,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         return true
 
     }
-
     override fun onLongClick(v: View?): Boolean {
         val dragShadowBuilder = View.DragShadowBuilder(v)
         v?.startDrag(null, dragShadowBuilder, v, 0)
         true
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
     private val dragListener = View.OnDragListener {
             view, event ->
         val tag = "Drag and drop"
@@ -461,8 +451,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         true
     }
-
-
     // See if we have permission or not
     @RequiresApi(Build.VERSION_CODES.M)
     private fun prepTakePhoto() {
@@ -474,9 +462,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             requestPermissions(permissionRequest,CAMERA_PERMISSION_REQUEST_CODE)
         }
     }
-
-
-
     private fun takePhoto() {
         // on this new intent, also apply the things I stated
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{
@@ -485,14 +470,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         }
     }
-
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
-
     companion object {
         //image pick code
         private val IMAGE_PICK_CODE = 1000
@@ -503,7 +486,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
         private val CAMERA_REQUEST_CODE = 2001
     }
-
     //handle requested permission result
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
@@ -528,7 +510,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             }
         }
     }
-
     //handle result of picked image  - so the URI is loaded into the view_meme placeholder
     // THIS IS the callback function from external of the app
     // resultCode represents what the user selected,
@@ -543,5 +524,4 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             view_meme.setImageBitmap(imageBitmap)
         }
     }
-
 }
