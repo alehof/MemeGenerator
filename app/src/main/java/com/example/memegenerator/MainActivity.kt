@@ -1,6 +1,7 @@
 package com.example.memegenerator
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.database.Cursor
 //import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -20,23 +22,45 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.*
-//import android.support.annotation.RequiresApi
-//import android.support.v4.content.ContextCompat
-//import android.support.v7.app.AppCompatActivity
+import android.view.DragEvent
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.graphics.drawable.toDrawable
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.util.*
 
-//Initialize Listeners-------------------------------------------------------------
+//Variables for constants
+const val TEXT_O = "text-o"
+const val TEXT_U = "text-u"
+const val SIZE_O = "size-o"
+const val SIZE_U = "size-u"
+const val COLOR_O = "color-o"
+const val COLOR_U = "color-u"
+const val FONT_O = "font-o"
+const val FONT_U = "font-u"
+const val ALLING_O = "alling-o"
+const val ALLING_U = "alling-u"
+
+//const val testFace:Typeface =Typeface.SERIF
+
+//Initialize Listeners, added LIFECYCLE OBSERVER-------------------------------------------------------------
 class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
     //Initialize TAG-----------------------------------------------
     private val TAG = MainActivity::class.java.simpleName
@@ -46,6 +70,22 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     private lateinit var random_number: Random
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
+    // private lateinit var editText1: EditText
+    // HELPERS FOR Storing the State of Typeface and TextSize
+    var typefacenr =  1
+    var sizenr = 1
+    //I make Variables, that can be used to save stuff
+    /*
+    var  content1 = editText1.getText().toString();
+    var content2 = editText2.text.toString()
+    var size1 = editText1.textSize.toString()
+    var size2 = editText2.textSize.toString()
+    var color1 = editText1.textColors.toString()
+    var color2 = editText2.textColors.toString()
+   // var alling1 = editText1.textAlignment.toString()
+   // var alling2 = editText2.textAlignment.toString()
+    var font1 = editText1.typeface.toString()
+    var font2 = editText2.typeface.toString()*/
    // private lateinit var editText1: EditText
   //  private  var imageView: ImageView = binding.viewMeme
 
@@ -68,8 +108,11 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
 
     @RequiresApi(Build.VERSION_CODES.N)
+    // Bundle saved below will now be availiable \/ here
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
        // binding.invalidateAll()
 
@@ -82,6 +125,52 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         setContentView(view)
         //Set Listeners for Touchscreen Text---------------------------------------
         setListeners()
+
+
+        //When there is info stored in the Bundle, it should be called
+        if(savedInstanceState != null){
+
+            editText1.setText(  savedInstanceState.getString(TEXT_O))
+            editText2.setText(  savedInstanceState.getString(TEXT_U))
+            // BUGGY FOR UNKNOWN REASONS
+          //  editText1.setTextSize(  savedInstanceState.getFloat(SIZE_O))
+           // editText2.setTextSize(  savedInstanceState.getFloat(SIZE_U))
+
+
+            sizenr = savedInstanceState.getInt(SIZE_U)
+
+            when (sizenr) {
+                1 -> changeSize1()
+                2 -> changeSize2()
+                3 -> changeSize3()
+                4 -> changeSize4()
+            }
+
+
+          //  val SizeofText = savedInstanceState.getString(SIZE_O)
+           // Toast.makeText(this, "TextSize: $SizeofText", Toast.LENGTH_LONG).show()
+
+            editText1.setTextColor(  savedInstanceState.getInt(COLOR_O))
+            editText2.setTextColor(  savedInstanceState.getInt(COLOR_U))
+
+            typefacenr = savedInstanceState.getInt(FONT_O)
+
+            when (typefacenr) {
+                1 -> changeFont1()
+                2 -> changeFont2()
+                3 -> changeFont3()
+                4 -> changeFont4()
+            }
+
+            /*alling1 = savedInstanceState.getString(ALLING_O).toString()
+            editText1.textAlignment(alling1.)
+             alling2 = savedInstanceState.getString(ALLING_U).toString()*/
+/*
+             font1 = savedInstanceState.getString(FONT_O).toString()
+            editText1.setTypeface(font1.)
+             font2 = savedInstanceState.getString(FONT_U).toString()
+            editText2.setTypeface(font2.to)*/
+        }
 
         //Data binding for nav drawer
         //drawerLayout = binding.drawerLayout
@@ -160,7 +249,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             }
         }
 
-       //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------
         //the optionsmenu For Color and Text
         button_settings.setOnClickListener {
             val popup1 = PopupMenu(this, button_settings)
@@ -243,6 +332,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         return Uri.parse(file.absolutePath)
     }
+
     // Store inside app done.
     private fun viewToBitmap(view: View, width: Int, height: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -250,9 +340,10 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         view.draw(canvas)
         return bitmap
     }
-    private fun saveImageToInternalStorage():Uri{
+
+    private fun saveImageToInternalStorage(): Uri {
         // Get the image from drawable resource as drawable object
-        val drawable = ContextCompat.getDrawable(applicationContext,view_meme.id)
+        val drawable = ContextCompat.getDrawable(applicationContext, view_meme.id)
 
         // Get the bitmap from drawable object
         val bitmap = (drawable as BitmapDrawable).bitmap
@@ -317,51 +408,65 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(10F)
         editText2.setTextSize(10F)
+        sizenr = 1
 
     }
-    private fun changeSize2(){
+
+    private fun changeSize2() {
         // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(20F)
         editText2.setTextSize(20F)
+        sizenr = 2
 
     }
-    private fun changeSize3(){
+
+    private fun changeSize3() {
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(30F)
         editText2.setTextSize(30F)
+        sizenr = 3
 
     }
-    private fun changeSize4(){
+
+    private fun changeSize4() {
         // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
         editText2.setTextSize(40F)
+        sizenr = 4
 
     }
 
     //Now the fonts:---------------------------------------------------------------------------------------------------
-    private fun changeFont1(){
+    private fun changeFont1() {
         // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTypeface(Typeface.DEFAULT)
         editText2.setTypeface(Typeface.DEFAULT)
+        typefacenr = 1
+        // nr 1
 
     }
     private fun changeFont2(){
-        // val editText1: EditText = fidndViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTypeface(Typeface.SERIF)
         editText2.setTypeface(Typeface.SERIF)
+        typefacenr = 2
 
     }
-    private fun changeFont3(){
+
+    private fun changeFont3() {
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTypeface(Typeface.DEFAULT_BOLD)
         editText2.setTypeface(Typeface.DEFAULT_BOLD)
-
+        typefacenr = 3
+// n3
     }
-    private fun changeFont4(){
+
+    private fun changeFont4() {
         // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTypeface(Typeface.MONOSPACE)
         editText2.setTypeface(Typeface.MONOSPACE)
-
+        typefacenr = 4
+//n4
     }
 
 
@@ -558,5 +663,35 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             val imageBitmap = data!!.extras!!.get("data") as Bitmap // typecasting in  kotlin "as"
             view_meme.setImageBitmap(imageBitmap)
         }
+    }
+
+    //Lifecycle OS already does part of that, we want other information safed, e.g. when the Phone is flipped, the TextView settings should be safed
+    //should work, bc. I think we are weeellll below the 100kb that would exeed the bundles limit.
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        //I use Constants, to ensure, that the exact same key is passed to the reconstruction method.
+        //CONTENT
+        outState.putString(TEXT_O, editText1.text.toString())
+        outState.putString(TEXT_U, editText2.text.toString())
+
+        //SIZE
+        outState.putInt(SIZE_O, sizenr)
+        outState.putInt(SIZE_U, sizenr)
+  //      outState.putFloat(SIZE_O,editText1.textSize)
+       // outState.putString(SIZE_O, editText1.textSize.toString())
+   //     outState.putFloat(SIZE_U, editText2.textSize)
+
+        //COLOR
+        outState.putInt(COLOR_O, editText1.currentTextColor)
+        outState.putInt(COLOR_U, editText2.currentTextColor)
+
+        //allingment--probably worthless
+//        outState.putString(ALLING_O, editText1.textAlignment.toString())
+//        outState.putString(ALLING_U, editText2.textAlignment.toString())
+
+        //FONT
+        outState.putInt(FONT_O, typefacenr)
+        outState.putInt(FONT_U, typefacenr)
     }
 }

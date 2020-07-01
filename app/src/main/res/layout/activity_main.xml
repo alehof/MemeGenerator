@@ -81,62 +81,6 @@
                     android:visibility="visible" />
 
             </LinearLayout>
-            <!-- TODO Get Text Size and color customizable via a menue-->
-
-            <!--
-
-                <EditText
-                    android:id="@+id/editText2"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-
-                    android:gravity="center"
-                    android:imeOptions="actionSend"
-                    android:inputType="text"
-                    android:text="Hallo4444"
-                    android:textColor="#ffffff"
-                    android:textSize="40sp"
-
-                    android:visibility="visible"
-
-                    app:layout_constraintEnd_toEndOf="@+id/view_meme"
-                    app:layout_constraintStart_toStartOf="@+id/view_meme"
-                    tools:ignore="LabelFor,MissingConstraints" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            -->
-
-            <!-- TODO: android Text Size and color should be variables. I also need to connect it with out Text button -->
-            <!-- android:layout_allignParentTop="true"-->
-            <!--android:gravity="center"
-            <TextView
-                android:id="@+id/TextView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffff"
-                android:textSize="40sp" />
-            <!- android:gravity="center"-->
-            <!--android:layout_allignParentBottom="true"
-
-            <EditText
-                android:id="@+id/EditText1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="number|text"
-                tools:ignore="LabelFor" />
-
-            <EditText
-                android:id="@+id/EditText2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:inputType="number|text"
-                tools:ignore="LabelFor" />
--->
 
         </FrameLayout>
 
@@ -226,20 +170,5 @@ navigation graph resource - @navigation/navigation. -->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-<!--
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/navView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                app:menu="@menu/navdrawer_menue"
-                app:headerLayout="@layout/nav_header"/>
-            //Takes care of Layout of our nav Drawer, more details in layout/nav_hader.xml
-        </androidx.drawerlayout.widget.DrawerLayout>
-                                                         -->
 </layout>
