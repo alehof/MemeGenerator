@@ -5,18 +5,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.database.Cursor
 //import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -28,12 +32,15 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.graphics.drawable.toDrawable
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.*
+import java.util.*
 
 //Initialize Listeners-------------------------------------------------------------
 class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
@@ -46,7 +53,8 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
    // private lateinit var editText1: EditText
-    private  lateinit var view_meme: ImageView
+
+
 
 
 
@@ -66,6 +74,28 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         //val navController = this.findNavController(R.id.myNavHostFragment)
         //NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         //NavigationUI.setupWithNavController(binding.navView, navController)
+
+    button_save.setOnClickListener{
+        val bitmap:Bitmap = viewToBitmap(frameLayout,frameLayout.width, frameLayout.height)
+
+
+        view_meme.setImageBitmap(bitmap)
+       val uri:Uri = saveImage(bitmap)
+
+     // For sharing purposes.
+        view_meme.setTag(uri.toString());
+      // Toast.makeText(this, "saved: $uri",Toast.LENGTH_LONG).show()
+
+       // to retrieve it from the tag use this.
+        val path = view_meme.getTag().toString();
+        Toast.makeText(this, "saved: $path",Toast.LENGTH_LONG).show()
+    }
+
+
+
+
+
+
 
         button_share.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
@@ -157,10 +187,76 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             }
             popup1.show()
             popup2.show()
-            popup3.show()
-
         }
 
+    }
+
+    private fun saveImage(bitmap: Bitmap):Uri {
+         val root_of_directory = getApplicationInfo().dataDir
+        val file = File(root_of_directory, "${UUID.randomUUID()}.jpg")
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+        return Uri.parse(file.absolutePath)
+    }
+
+
+    // Store inside app done.
+    private fun viewToBitmap(view: View, width: Int, height: Int): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+    private fun saveImageToInternalStorage():Uri{
+        // Get the image from drawable resource as drawable object
+        val drawable = ContextCompat.getDrawable(applicationContext,view_meme.id)
+
+        // Get the bitmap from drawable object
+        val bitmap = (drawable as BitmapDrawable).bitmap
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        var file = wrapper.getDir("images", Context.MODE_PRIVATE)
+
+
+        // Create a file to save the image
+        file = File(file, "${UUID.randomUUID()}.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+
+        // Return the saved image uri
+        return Uri.parse(file.absolutePath)
+    }
     }
     //TODO: Fonts zum Ändern hinzufügen, 2tes Edit Text, Verhalten wenn App geschlossen wird(States sichern...Aubout ME schreiben+Readme)//Sharen, Speicherfunktionen, Layout optimieren, Meme Templates einfügen--------------------------------------------------------------------------------------------
     //Function to change color of Text----------------------------------------------------!!!!!!!!!!!!!!------------------------------------------

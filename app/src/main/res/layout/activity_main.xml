@@ -28,8 +28,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/AdjustMeme"
                 app:srcCompat="@drawable/sample_view"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="-97dp" />
+                 />
 
             <LinearLayout
                 android:id="@+id/ll_pinklayout"
@@ -39,13 +38,9 @@
 
                 <EditText
                     android:id="@+id/editText1"
-
-
-                    android:layout_width="252dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-
-                    android:gravity="center"
                     android:imeOptions="actionSend"
                     android:importantForAutofill="no"
                     android:inputType="text"
@@ -85,6 +80,7 @@
                     android:fontFamily="@font/abril_fatface"
 
                     android:visibility="visible" />
+
             </LinearLayout>
             <!-- TODO Get Text Size and color customizable via a menue-->
 
