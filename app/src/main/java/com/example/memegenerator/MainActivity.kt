@@ -1,7 +1,6 @@
 package com.example.memegenerator
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ClipData
 import android.content.Context
@@ -9,7 +8,6 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
-import android.database.Cursor
 //import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -20,7 +18,6 @@ import androidx.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
@@ -32,11 +29,8 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.graphics.drawable.toDrawable
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import com.example.memegenerator.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.*
@@ -49,13 +43,41 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private lateinit var random_number: Random
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
    // private lateinit var editText1: EditText
+  //  private  var imageView: ImageView = binding.viewMeme
+
+    val sampleDrawables = intArrayOf(
+        R.drawable.sample_1,
+        R.drawable.sample_2,
+        R.drawable.sample_3,
+        R.drawable.sample_4,
+        R.drawable.sample_5,
+        R.drawable.sample_6,
+        R.drawable.sample_7,
+        R.drawable.sample_8,
+        R.drawable.sample_9,
+        R.drawable.sample_10)
+
+
+
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+       // binding.invalidateAll()
+
+
+      change_sample_image()
+        // ------ image randomization?
+       // imageView.setImageResource(R.drawable.sample_2)
+
         val view = binding.root
         setContentView(view)
         //Set Listeners for Touchscreen Text---------------------------------------
@@ -110,6 +132,10 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
         button_camera.setOnClickListener {
             prepTakePhoto()
+        }
+
+        button_undo.setOnClickListener {
+            change_sample_image()
         }
 
 // CODE FROM https://devofandroid.blogspot.com/2018/09/pick-image-from-gallery-android-studio_15.html
@@ -188,6 +214,15 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
 
     }
+
+    private fun change_sample_image() {
+
+        var zeresulto:Int = (0..10).random()
+        view_meme.setImageResource(sampleDrawables[zeresulto])
+        Toast.makeText(this, "Drawable value $zeresulto", Toast.LENGTH_LONG).show()
+
+    }
+
     private fun saveImage(bitmap: Bitmap):Uri {
          val root_of_directory = getApplicationInfo().dataDir
         val file = File(root_of_directory, "${UUID.randomUUID()}.jpg")
@@ -311,7 +346,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     }
     private fun changeFont2(){
-        // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = fidndViewById(R.id.editText1)
         editText1.setTypeface(Typeface.SERIF)
         editText2.setTypeface(Typeface.SERIF)
 
