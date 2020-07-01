@@ -122,7 +122,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_settings"
             app:layout_constraintTop_toTopOf="@+id/button_settings"
-            app:srcCompat="@drawable/ic_open" />
+            app:srcCompat="@drawable/ic_open"
+            />
 
         <!-- This is the NavHostFragment within the activity_main layout
 It needs to know which navigation graph resource to use,

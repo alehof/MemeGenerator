@@ -33,6 +33,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
+import androidx.core.view.drawToBitmap
 
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
@@ -55,6 +57,7 @@ const val FONT_O = "font-o"
 const val FONT_U = "font-u"
 const val ALLING_O = "alling-o"
 const val ALLING_U = "alling-u"
+const val URI_VALUE = "uri"
 
 //const val testFace:Typeface =Typeface.SERIF
 
@@ -72,6 +75,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     // HELPERS FOR Storing the State of Typeface and TextSize
     var typefacenr =  1
     var sizenr = 1
+    var saved = 0
     //I make Variables, that can be used to save stuff
     /*
     var  content1 = editText1.getText().toString();
@@ -114,8 +118,9 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
        // binding.invalidateAll()
 
-
-      change_sample_image()
+        if(savedInstanceState == null) {
+            change_sample_image()
+        }
         // ------ image randomization?
        // imageView.setImageResource(R.drawable.sample_2)
 
@@ -125,8 +130,16 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         setListeners()
 
 
+
         //When there is info stored in the Bundle, it should be called
         if(savedInstanceState != null){
+
+        //    view_meme.setImageURI(toUri(savedInstanceState.getString(URI_VALUE)))
+            val uri_name_as_String:String = savedInstanceState.getString(URI_VALUE).toString()
+        val   stored_uri_name:Uri = uri_name_as_String.toUri()
+            view_meme.setImageURI(stored_uri_name)
+            //URI_VALUE.toUri()
+
 
             editText1.setText(  savedInstanceState.getString(TEXT_O))
             editText2.setText(  savedInstanceState.getString(TEXT_U))
@@ -183,7 +196,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
         view_meme.setImageBitmap(bitmap)
        val uri:Uri = saveImage(bitmap)
-
+        saved = 1
      // For sharing purposes.
         view_meme.setTag(uri.toString());
       // Toast.makeText(this, "saved: $uri",Toast.LENGTH_LONG).show()
@@ -200,7 +213,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
 
         button_share.setOnClickListener {
-
+            if (saved != 0) {
 
             val path = view_meme.getTag().toString()
 
@@ -215,7 +228,10 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             startActivity(Intent.createChooser(shareIntent, "Share images..."));
 
 
-        }
+        }else {
+                Toast.makeText(this, "Pls save before sharing", Toast.LENGTH_SHORT).show()
+
+        }}
 
         button_camera.setOnClickListener {
             prepTakePhoto()
@@ -304,7 +320,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
     private fun change_sample_image() {
 
-        var zeresulto:Int = (0..10).random()
+        var zeresulto:Int = (1..10).random()
         view_meme.setImageResource(sampleDrawables[zeresulto])
         Toast.makeText(this, "Drawable value $zeresulto", Toast.LENGTH_LONG).show()
 
@@ -330,6 +346,33 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         return Uri.parse(file.absolutePath)
     }
+
+    private fun saveImageForRestoring(bitmap: Bitmap):Uri {
+        val root_of_directory = getApplicationInfo().dataDir
+        val file = File(root_of_directory, "${UUID.randomUUID()}.jpg")
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(file)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+        return Uri.parse(file.absolutePath)
+    }
+
+
+
+
+
+
 
     // Store inside app done.
     private fun viewToBitmap(view: View, width: Int, height: Int): Bitmap {
@@ -691,5 +734,11 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         //FONT
         outState.putInt(FONT_O, typefacenr)
         outState.putInt(FONT_U, typefacenr)
+
+        //STORING THE PIC
+        val inbetween_storage_uri: Uri = saveImageForRestoring(view_meme.drawToBitmap())
+        outState.putString(URI_VALUE, inbetween_storage_uri.toString())
+
+
     }
 }
