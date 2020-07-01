@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +14,7 @@
             android:id="@+id/frameLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="160dp"
+            android:layout_marginBottom="80dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +23,9 @@
             <ImageView
                 android:id="@+id/view_meme"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/AdjustMeme"
-                app:srcCompat="@drawable/sample_view"
-                 />
+                app:srcCompat="@drawable/sample_view" />
 
             <LinearLayout
                 android:id="@+id/ll_pinklayout"
@@ -38,47 +35,49 @@
 
                 <EditText
                     android:id="@+id/editText1"
+                    style="@style/Widget.AppCompat.EditText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:fontFamily="@font/abril_fatface"
                     android:imeOptions="actionSend"
                     android:importantForAutofill="no"
                     android:inputType="text"
+
                     android:lines="1"
                     android:maxLength="50"
 
+
                     android:maxLines="1"
                     android:text="Hallo-oben"
-
-
                     android:textColor="#ffffff"
-                    android:textSize="40sp"
-                    android:fontFamily="@font/abril_fatface"
 
+                    android:textSize="40sp"
                     android:visibility="visible" />
 
                 <EditText
                     android:id="@+id/editText2"
 
 
-                    android:layout_width="252dp"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
 
+                    android:ems="10"
+                    android:fontFamily="@font/abril_fatface"
                     android:gravity="center"
                     android:imeOptions="actionSend"
                     android:importantForAutofill="no"
                     android:inputType="text"
+
                     android:lines="1"
                     android:maxLength="50"
 
                     android:maxLines="1"
                     android:text="Hallo-unten"
-
                     android:textColor="#ffffff"
-                    android:textSize="40sp"
-                    android:fontFamily="@font/abril_fatface"
 
+                    android:textSize="40sp"
                     android:visibility="visible" />
 
             </LinearLayout>
@@ -141,58 +140,47 @@
 
         </FrameLayout>
 
-<ImageButton
-    android:id="@+id/button_undo"
-    style="@style/ButtonStyle"
-    android:layout_width="101dp"
-    android:layout_height="78dp"
-    android:layout_marginTop="80dp"
-    android:baselineAlignBottom="false"
-    android:contentDescription="@string/button_undo"
-    app:layout_constraintEnd_toStartOf="@+id/button_open"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-    app:srcCompat="@drawable/ic_undo" />
+        <ImageButton
+            android:id="@+id/button_undo"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:baselineAlignBottom="false"
+            android:contentDescription="@string/button_undo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_settings"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            app:srcCompat="@drawable/ic_undo" />
 
-<ImageButton
-    android:id="@+id/button_save"
-    style="@style/ButtonStyle"
-    android:layout_width="102dp"
-    android:layout_height="78dp"
-    android:contentDescription="@string/button_save"
-    app:layout_constraintEnd_toStartOf="@+id/button_share"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/button_open"
-    app:layout_constraintTop_toTopOf="@+id/button_open"
-    app:srcCompat="@drawable/ic_save" />
+        <ImageButton
+            android:id="@+id/button_save"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/button_save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_share"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_camera"
+            app:layout_constraintTop_toTopOf="@+id/button_camera"
+            app:srcCompat="@drawable/ic_save" />
 
-<ImageButton
-    android:id="@+id/button_open"
-    style="@style/ButtonStyle"
-    android:layout_width="102dp"
-    android:layout_height="78dp"
-    android:contentDescription="@string/button_open"
-    app:layout_constraintEnd_toStartOf="@+id/button_save"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/button_undo"
-    app:layout_constraintTop_toTopOf="@+id/button_undo"
-    app:srcCompat="@drawable/ic_open" />
+        <ImageButton
+            android:id="@+id/button_open"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/button_open"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_camera"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_settings"
+            app:layout_constraintTop_toTopOf="@+id/button_settings"
+            app:srcCompat="@drawable/ic_open" />
 
-<ImageButton
-    android:id="@+id/button_share"
-    style="@style/ButtonStyle"
-    android:layout_width="101dp"
-    android:layout_height="78dp"
-    android:contentDescription="@string/button_share"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5"
-    app:layout_constraintStart_toEndOf="@+id/button_save"
-    app:layout_constraintTop_toTopOf="@+id/button_save"
-    app:srcCompat="@drawable/ic_share" />
-
-<!-- This is the NavHostFragment within the activity_main layout
+        <!-- This is the NavHostFragment within the activity_main layout
 It needs to know which navigation graph resource to use,
 so add the app:navGraph attribute and have it point to the
 navigation graph resource - @navigation/navigation. -->
@@ -200,28 +188,41 @@ navigation graph resource - @navigation/navigation. -->
         <ImageButton
             android:id="@+id/button_camera"
             style="@style/ButtonStyle"
-            android:layout_width="159dp"
-            android:layout_height="62dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/takePicture"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            app:layout_constraintVertical_bias="0.091"
+            app:layout_constraintEnd_toStartOf="@+id/button_save"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_open"
+            app:layout_constraintTop_toTopOf="@+id/button_open"
             app:srcCompat="@drawable/ic_camera" />
 
         <ImageButton
             android:id="@+id/button_settings"
             style="@style/ButtonStyle"
-            android:layout_width="159dp"
-            android:layout_height="62dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/button_settings"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            app:layout_constraintVertical_bias="0.091"
+            app:layout_constraintEnd_toStartOf="@+id/button_open"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_undo"
+            app:layout_constraintTop_toTopOf="@+id/button_undo"
             app:srcCompat="@drawable/ic_settings" />
+
+        <ImageButton
+            android:id="@+id/button_share"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/button_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_save"
+            app:layout_constraintTop_toTopOf="@+id/button_save"
+            app:srcCompat="@drawable/ic_share" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
