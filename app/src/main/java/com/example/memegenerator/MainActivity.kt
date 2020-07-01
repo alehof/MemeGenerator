@@ -33,9 +33,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.core.graphics.drawable.toDrawable
+
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.memegenerator.databinding.ActivityMainBinding
