@@ -48,11 +48,36 @@
                     android:maxLength="50"
 
                     android:maxLines="1"
-                    android:text="Hallo2222"
+                    android:text="Hallo-oben"
 
 
                     android:textColor="#ffffff"
                     android:textSize="40sp"
+                    android:fontFamily="@font/abril_fatface"
+
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/editText2"
+
+
+                    android:layout_width="252dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+
+                    android:gravity="center"
+                    android:imeOptions="actionSend"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:lines="1"
+                    android:maxLength="50"
+
+                    android:maxLines="1"
+                    android:text="Hallo-unten"
+
+                    android:textColor="#ffffff"
+                    android:textSize="40sp"
+                    android:fontFamily="@font/abril_fatface"
 
                     android:visibility="visible" />
 

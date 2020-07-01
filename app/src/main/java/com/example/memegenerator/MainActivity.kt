@@ -14,6 +14,7 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import androidx.databinding.DataBindingUtil
 import android.net.Uri
@@ -45,18 +46,11 @@ import java.util.*
 class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
     //Initialize TAG-----------------------------------------------
     private val TAG = MainActivity::class.java.simpleName
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-
     //Initializing the Vies etc. for the Texteditor------------------------------------------------------------------------------->
    // private lateinit var editText1: EditText
-
-
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,10 +139,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         button_settings.setOnClickListener {
             val popup1 = PopupMenu(this, button_settings)
             val popup2 = PopupMenu(this, button_settings)
+            val popup3 = PopupMenu(this, button_settings)
 
             //Inflating the Popup using xml file
             popup1.menuInflater.inflate(R.menu.button_size, popup1.menu)
             popup2.menuInflater.inflate(R.menu.button_color, popup2.menu)
+            popup3.menuInflater.inflate(R.menu.button_text, popup3.menu)
 
             popup1.setOnMenuItemClickListener {
                 if (it.itemId == R.id.size1) {
@@ -174,12 +170,24 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
                 }
                 true
             }
+            popup3.setOnMenuItemClickListener {
+                if (it.itemId == R.id.text1) {
+                    changeFont1()
+                } else if (it.itemId == R.id.text2) {
+                    changeFont2()
+                } else if (it.itemId == R.id.text3) {
+                    changeFont3()
+                } else if (it.itemId == R.id.text4) {
+                    changeFont4()
+                }
+                true
+            }
             popup1.show()
             popup2.show()
+            popup3.show()
         }
 
     }
-
     private fun saveImage(bitmap: Bitmap):Uri {
          val root_of_directory = getApplicationInfo().dataDir
         val file = File(root_of_directory, "${UUID.randomUUID()}.jpg")
@@ -200,8 +208,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         return Uri.parse(file.absolutePath)
     }
-
-
     // Store inside app done.
     private fun viewToBitmap(view: View, width: Int, height: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
@@ -250,42 +256,79 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     private fun changeColor1(){
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.WHITE)
+        editText2.setTextColor(Color.WHITE)
+
     }
     private fun changeColor2(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLACK)
+        editText2.setTextColor(Color.BLACK)
 
     }
     private fun changeColor3(){
-      //  val editText1: EditText = findViewById(R.id.editText1)
+        //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.GREEN)
+        editText2.setTextColor(Color.GREEN)
 
     }
     private fun changeColor4(){
-      //  val editText1: EditText = findViewById(R.id.editText1)
+        //  val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextColor(Color.BLUE)
+        editText2.setTextColor(Color.BLUE)
 
     }
     //Now for the Sizes:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private fun changeSize1(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(10F)
+        editText2.setTextSize(10F)
+
     }
     private fun changeSize2(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(20F)
+        editText2.setTextSize(20F)
 
     }
     private fun changeSize3(){
         //val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(30F)
+        editText2.setTextSize(30F)
 
     }
     private fun changeSize4(){
-       // val editText1: EditText = findViewById(R.id.editText1)
+        // val editText1: EditText = findViewById(R.id.editText1)
         editText1.setTextSize(40F)
+        editText2.setTextSize(40F)
 
     }
+
+    //Now the fonts:---------------------------------------------------------------------------------------------------
+    private fun changeFont1(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.DEFAULT)
+        editText2.setTypeface(Typeface.DEFAULT)
+
+    }
+    private fun changeFont2(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.SERIF)
+        editText2.setTypeface(Typeface.SERIF)
+
+    }
+    private fun changeFont3(){
+        //val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.DEFAULT_BOLD)
+        editText2.setTypeface(Typeface.DEFAULT_BOLD)
+
+    }
+    private fun changeFont4(){
+        // val editText1: EditText = findViewById(R.id.editText1)
+        editText1.setTypeface(Typeface.MONOSPACE)
+        editText2.setTypeface(Typeface.MONOSPACE)
+
+    }
+
 
    //Override with specific Listeners for Touchscreen Text-----------------------------------------
     @RequiresApi(Build.VERSION_CODES.N)
@@ -304,11 +347,16 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             editText1.startDragAndDrop(data, shadowBuilder, editText1, 0)
             true
         }
+       editText2.setOnLongClickListener {
+           val data = ClipData.newPlainText("", "")
+           val shadowBuilder = View.DragShadowBuilder(editText2)
+           editText2.startDragAndDrop(data, shadowBuilder, editText2, 0)
+           true
+       }
 
         ll_pinklayout.setOnDragListener(dragListener)
 
     }
-
     override fun onDrag(view:View, dragEvent: DragEvent):Boolean {
         Log.d(TAG, "onDrag: view->$view\n DragEvent$dragEvent")
         when (dragEvent.action) {
@@ -358,14 +406,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         return true
 
     }
-
     override fun onLongClick(v: View?): Boolean {
         val dragShadowBuilder = View.DragShadowBuilder(v)
         v?.startDrag(null, dragShadowBuilder, v, 0)
         true
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
     private val dragListener = View.OnDragListener {
             view, event ->
         val tag = "Drag and drop"
@@ -405,8 +451,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         true
     }
-
-
     // See if we have permission or not
     @RequiresApi(Build.VERSION_CODES.M)
     private fun prepTakePhoto() {
@@ -418,9 +462,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             requestPermissions(permissionRequest,CAMERA_PERMISSION_REQUEST_CODE)
         }
     }
-
-
-
     private fun takePhoto() {
         // on this new intent, also apply the things I stated
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{
@@ -429,14 +470,12 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         }
         }
     }
-
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
-
     companion object {
         //image pick code
         private val IMAGE_PICK_CODE = 1000
@@ -447,7 +486,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
 
         private val CAMERA_REQUEST_CODE = 2001
     }
-
     //handle requested permission result
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
@@ -472,7 +510,6 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             }
         }
     }
-
     //handle result of picked image  - so the URI is loaded into the view_meme placeholder
     // THIS IS the callback function from external of the app
     // resultCode represents what the user selected,
@@ -487,5 +524,4 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
             view_meme.setImageBitmap(imageBitmap)
         }
     }
-
 }
