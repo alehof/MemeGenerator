@@ -112,24 +112,19 @@
             app:srcCompat="@drawable/ic_undo" />
 
         <Button
+            android:id="@+id/button_move_text_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="move_text_out"
+            app:layout_constraintBottom_toTopOf="@+id/button_share"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
             android:id="@+id/button_move_text_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="move_text_in"
-            app:layout_constraintBaseline_toBaselineOf="@+id/button_move_text_out"
-            app:layout_constraintEnd_toStartOf="@+id/button_open"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button_move_text_out" />
-
-        <Button
-            android:id="@+id/button_move_text_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
-            android:layout_marginBottom="70dp"
-            android:text="move_text_out"
-            app:layout_constraintBottom_toBottomOf="@+id/button_undo"
-            app:layout_constraintEnd_toStartOf="@+id/button_move_text_in"
+            app:layout_constraintBottom_toTopOf="@+id/button_undo"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
@@ -156,7 +151,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_settings"
             app:layout_constraintTop_toTopOf="@+id/button_settings"
-            app:srcCompat="@drawable/ic_open" />
+            app:srcCompat="@drawable/ic_open"
+            />
 
         <!-- This is the NavHostFragment within the activity_main layout
 It needs to know which navigation graph resource to use,
