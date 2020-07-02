@@ -20,78 +20,82 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </FrameLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <ImageView
-                android:id="@+id/view_meme"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/inside_constraint"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/AdjustMeme"
-                app:srcCompat="@drawable/sample_view" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/editText1"
-                style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
+                <ImageView
+                    android:id="@+id/view_meme"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/AdjustMeme"
+                    app:srcCompat="@drawable/sample_view"
+                    tools:layout_editor_absoluteX="31dp"
+                    tools:layout_editor_absoluteY="16dp" />
 
-                android:fontFamily="@font/abril_fatface"
-                android:imeOptions="actionSend"
-
-
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:lines="1"
-
-                android:maxLength="50"
-                android:maxLines="1"
-                android:text="Hallo-oben"
-                android:textColor="#ffffff"
-                android:textSize="40sp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/view_meme"
-                app:layout_constraintEnd_toEndOf="@id/view_meme"
-                app:layout_constraintStart_toStartOf="@id/view_meme"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <EditText
-                android:id="@+id/editText2"
+                <EditText
+                    android:id="@+id/editText1"
 
 
-                style="@style/Widget.AppCompat.EditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                android:ems="10"
-                android:fontFamily="@font/abril_fatface"
-                android:gravity="center"
-                android:imeOptions="actionSend"
-                android:importantForAutofill="no"
+                    android:ems="10"
+                    android:fontFamily="@font/abril_fatface"
+                    android:gravity="center"
+                    android:imeOptions="actionSend"
 
-                android:inputType="text"
-                android:lines="1"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
 
-                android:maxLength="50"
-                android:maxLines="1"
-                android:text="Hallo-unten"
+                    android:lines="1"
+                    android:maxLength="50"
+                    android:maxLines="1"
 
-                android:textColor="#ffffff"
-                android:textSize="40sp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/view_meme"
-                app:layout_constraintEnd_toEndOf="@+id/view_meme"
-                app:layout_constraintStart_toStartOf="@id/view_meme" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:text="Hallo-oben"
+                    android:textColor="#ffffff"
+                    android:textSize="40sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@id/editText2"
+                    app:layout_constraintEnd_toEndOf="@+id/view_meme"
+                    app:layout_constraintStart_toStartOf="@id/view_meme"
+                    app:layout_constraintTop_toTopOf="@id/view_meme"
+                    app:layout_constraintVertical_bias="0.01999998" />
+
+                <EditText
+                    android:id="@+id/editText2"
+
+
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:ems="10"
+                    android:fontFamily="@font/abril_fatface"
+                    android:gravity="center"
+                    android:imeOptions="actionSend"
+
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+
+                    android:lines="1"
+                    android:maxLength="50"
+                    android:maxLines="1"
+
+                    android:text="Hallo-unten"
+                    android:textColor="#ffffff"
+                    android:textSize="40sp"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@id/view_meme"
+                    app:layout_constraintEnd_toEndOf="@+id/view_meme"
+                    app:layout_constraintStart_toStartOf="@id/view_meme"
+                    app:layout_constraintTop_toTopOf="@+id/view_meme"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
 
         <ImageButton
             android:id="@+id/button_undo"
@@ -106,6 +110,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout"
             app:srcCompat="@drawable/ic_undo" />
+
+        <Button
+            android:id="@+id/button_move_text_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="move_text_in"
+            app:layout_constraintBaseline_toBaselineOf="@+id/button_move_text_out"
+            app:layout_constraintEnd_toStartOf="@+id/button_open"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_move_text_out" />
+
+        <Button
+            android:id="@+id/button_move_text_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginBottom="70dp"
+            android:text="move_text_out"
+            app:layout_constraintBottom_toBottomOf="@+id/button_undo"
+            app:layout_constraintEnd_toStartOf="@+id/button_move_text_in"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/button_save"
@@ -131,8 +156,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/button_settings"
             app:layout_constraintTop_toTopOf="@+id/button_settings"
-            app:srcCompat="@drawable/ic_open"
-            />
+            app:srcCompat="@drawable/ic_open" />
 
         <!-- This is the NavHostFragment within the activity_main layout
 It needs to know which navigation graph resource to use,

@@ -27,12 +27,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.LinearLayout
-import android.widget.PopupMenu
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.net.toUri
 import androidx.core.view.drawToBitmap
 
@@ -58,6 +58,8 @@ const val FONT_U = "font-u"
 const val ALLING_O = "alling-o"
 const val ALLING_U = "alling-u"
 const val URI_VALUE = "uri"
+const val BIAS_O = "bias-o"
+const val BIAS_U = "bias-u"
 
 //const val testFace:Typeface =Typeface.SERIF
 
@@ -76,6 +78,9 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
     var typefacenr =  1
     var sizenr = 3
     var saved = 0
+
+   var editText1_bias = 0.1f
+    var editText2_bias = 1.0f
     //I make Variables, that can be used to save stuff
     /*
     var  content1 = editText1.getText().toString();
@@ -173,6 +178,11 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
                 4 -> changeFont4()
             }
 
+            editText1_bias = (savedInstanceState.getFloat(BIAS_O))
+            editText2_bias = (savedInstanceState.getFloat(BIAS_U))
+
+
+
             /*alling1 = savedInstanceState.getString(ALLING_O).toString()
             editText1.textAlignment(alling1.)
              alling2 = savedInstanceState.getString(ALLING_U).toString()*/
@@ -206,6 +216,28 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
         Toast.makeText(this, "saved: $path",Toast.LENGTH_LONG).show()
     }
 
+        button_move_text_in.setOnClickListener {
+     val set = ConstraintSet()
+        set.clone(inside_constraint)
+            editText1_bias = editText1_bias+0.1f
+            editText2_bias = editText2_bias-0.1f
+            set.setVerticalBias(editText1.id, editText1_bias)
+           // set.setVerticalBias(editText1.id, 0.3f)
+            set.setVerticalBias(editText2.id, editText2_bias)
+
+            set.applyTo(inside_constraint)
+        }
+
+        button_move_text_out.setOnClickListener {
+            val set = ConstraintSet()
+            editText1_bias = editText1_bias-0.1f
+            editText2_bias = editText2_bias+0.1f
+            set.clone(inside_constraint)
+            set.setVerticalBias(editText1.id, editText1_bias)
+            set.setVerticalBias(editText2.id, editText2_bias)
+
+            set.applyTo(inside_constraint)
+        }
 
 
 
@@ -634,6 +666,11 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener {
         //STORING THE PIC
         val inbetween_storage_uri: Uri = saveImageForRestoring(view_meme.drawToBitmap())
         outState.putString(URI_VALUE, inbetween_storage_uri.toString())
+
+        // STORING BIAS OF TEXT ALIGNS
+
+        outState.putFloat(BIAS_O, editText1_bias)
+        outState.putFloat(BIAS_U, editText2_bias)
 
 
     }
