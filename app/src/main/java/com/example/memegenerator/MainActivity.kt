@@ -62,7 +62,7 @@ const val URI_VALUE = "uri"
 //const val testFace:Typeface =Typeface.SERIF
 
 //Initialize Listeners, added LIFECYCLE OBSERVER-------------------------------------------------------------
-class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListener, View.OnLongClickListener {
+class MainActivity : AppCompatActivity(), View.OnTouchListener {
     //Initialize TAG-----------------------------------------------
     private val TAG = MainActivity::class.java.simpleName
     private lateinit var binding: ActivityMainBinding
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     // private lateinit var editText1: EditText
     // HELPERS FOR Storing the State of Typeface and TextSize
     var typefacenr =  1
-    var sizenr = 1
+    var sizenr = 3
     var saved = 0
     //I make Variables, that can be used to save stuff
     /*
@@ -515,71 +515,10 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setListeners() {
 
-        ll_pinklayout.setOnLongClickListener {
-            val data = ClipData.newPlainText("", "")
-            val shadowBuilder = View.DragShadowBuilder(ll_pinklayout)
-           ll_pinklayout.startDragAndDrop(data, shadowBuilder, ll_pinklayout, 0)
-            true
-        }
 
-        editText1.setOnLongClickListener {
-            val data = ClipData.newPlainText("", "")
-            val shadowBuilder = View.DragShadowBuilder(editText1)
-            editText1.startDragAndDrop(data, shadowBuilder, editText1, 0)
-            true
-        }
-       editText2.setOnLongClickListener {
-           val data = ClipData.newPlainText("", "")
-           val shadowBuilder = View.DragShadowBuilder(editText2)
-           editText2.startDragAndDrop(data, shadowBuilder, editText2, 0)
-           true
-       }
-
-        ll_pinklayout.setOnDragListener(dragListener)
 
     }
-    override fun onDrag(view:View, dragEvent: DragEvent):Boolean {
-        Log.d(TAG, "onDrag: view->$view\n DragEvent$dragEvent")
-        when (dragEvent.action) {
-            DragEvent.ACTION_DRAG_ENDED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_ENDED ")
-                return true
-            }
-            DragEvent.ACTION_DRAG_EXITED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_EXITED")
-                return true
-            }
-            DragEvent.ACTION_DRAG_ENTERED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_ENTERED")
-                return true
-            }
-            DragEvent.ACTION_DRAG_STARTED -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_STARTED")
-                return true
-            }
-            DragEvent.ACTION_DROP -> {
-                Log.d(TAG, "onDrag: ACTION_DROP")
-                val tvState = dragEvent.localState as View
-                Log.d(TAG, "onDrag:viewX" + dragEvent.x + "viewY" + dragEvent.y)
-                Log.d(TAG, "onDrag: Owner->" + tvState.parent)
-                val tvParent = tvState.parent as ViewGroup
-                tvParent.removeView(tvState)
-                val container = view as LinearLayout
-                container.addView(tvState)
-                tvParent.removeView(tvState)
-                tvState.x = dragEvent.x
-                tvState.y = dragEvent.y
-                view.addView(tvState)
-                view.setVisibility(View.VISIBLE)
-                return true
-            }
-            DragEvent.ACTION_DRAG_LOCATION -> {
-                Log.d(TAG, "onDrag: ACTION_DRAG_LOCATION")
-                return true
-            }
-            else -> return false
-        }
-    }
+
     override fun onTouch(view:View, motionEvent: MotionEvent):Boolean {
 
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -587,51 +526,8 @@ class MainActivity : AppCompatActivity(), View.OnTouchListener, View.OnDragListe
         return true
 
     }
-    override fun onLongClick(v: View?): Boolean {
-        val dragShadowBuilder = View.DragShadowBuilder(v)
-        v?.startDrag(null, dragShadowBuilder, v, 0)
-        true
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-    private val dragListener = View.OnDragListener {
-            view, event ->
-        val tag = "Drag and drop"
-        event?.let {
-            when (event.action) {
-                DragEvent.ACTION_DRAG_STARTED -> {
-                    Log.d(tag, "ACTION_DRAG_STARTED")
-                }
-                DragEvent.ACTION_DRAG_ENDED -> {
-                    Log.d(tag, "ACTION_DRAG_ENDED")
-                }
-                DragEvent.ACTION_DRAG_ENTERED -> {
-                    Log.d(tag, "ACTION_DRAG_ENDED")
-                }
-                DragEvent.ACTION_DRAG_EXITED -> {
-                    Log.d(tag, "ACTION_DRAG_ENDED")
-                }
-                DragEvent.ACTION_DROP -> {
-                    Log.d(tag, "ACTION_DROP")
-                    val tvState = event.localState as View
-                    Log.d(TAG, "onDrag:viewX" + event.x + "viewY" + event.y)
-                    Log.d(TAG, "onDrag: Owner->" + tvState.parent)
-                    val tvParent = tvState.parent as ViewGroup
-                    tvParent.removeView(tvState)
-                    val container = view as LinearLayout
-                    container.addView(tvState)
-                    tvParent.removeView(tvState)
-                    tvState.x = event.x
-                    tvState.y = event.y
-                    view.addView(tvState)
-                    view.setVisibility(View.VISIBLE)
-                }
-                else -> {
-                    Log.d(tag, "ACTION_DRAG_ ELSE ...")
-                }
-            }
-        }
-        true
-    }
+
+
     // See if we have permission or not
     @RequiresApi(Build.VERSION_CODES.M)
     private fun prepTakePhoto() {

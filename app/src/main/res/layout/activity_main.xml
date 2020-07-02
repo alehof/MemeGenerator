@@ -20,6 +20,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+        </FrameLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <ImageView
                 android:id="@+id/view_meme"
                 android:layout_width="match_parent"
@@ -27,62 +37,61 @@
                 android:contentDescription="@string/AdjustMeme"
                 app:srcCompat="@drawable/sample_view" />
 
-            <LinearLayout
-                android:id="@+id/ll_pinklayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <EditText
+                android:id="@+id/editText1"
+                style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
 
-                <EditText
-                    android:id="@+id/editText1"
-                    style="@style/Widget.AppCompat.EditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:fontFamily="@font/abril_fatface"
-                    android:imeOptions="actionSend"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
-
-                    android:lines="1"
-                    android:maxLength="50"
+                android:fontFamily="@font/abril_fatface"
+                android:imeOptions="actionSend"
 
 
-                    android:maxLines="1"
-                    android:text="Hallo-oben"
-                    android:textColor="#ffffff"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:lines="1"
 
-                    android:textSize="40sp"
-                    android:visibility="visible" />
+                android:maxLength="50"
+                android:maxLines="1"
+                android:text="Hallo-oben"
+                android:textColor="#ffffff"
+                android:textSize="40sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/view_meme"
+                app:layout_constraintEnd_toEndOf="@id/view_meme"
+                app:layout_constraintStart_toStartOf="@id/view_meme"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-                <EditText
-                    android:id="@+id/editText2"
+            <EditText
+                android:id="@+id/editText2"
 
 
-                    style="@style/Widget.AppCompat.EditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-                    android:ems="10"
-                    android:fontFamily="@font/abril_fatface"
-                    android:gravity="center"
-                    android:imeOptions="actionSend"
-                    android:importantForAutofill="no"
-                    android:inputType="text"
+                android:ems="10"
+                android:fontFamily="@font/abril_fatface"
+                android:gravity="center"
+                android:imeOptions="actionSend"
+                android:importantForAutofill="no"
 
-                    android:lines="1"
-                    android:maxLength="50"
+                android:inputType="text"
+                android:lines="1"
 
-                    android:maxLines="1"
-                    android:text="Hallo-unten"
-                    android:textColor="#ffffff"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:text="Hallo-unten"
 
-                    android:textSize="40sp"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-        </FrameLayout>
+                android:textColor="#ffffff"
+                android:textSize="40sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/view_meme"
+                app:layout_constraintEnd_toEndOf="@+id/view_meme"
+                app:layout_constraintStart_toStartOf="@id/view_meme" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/button_undo"
