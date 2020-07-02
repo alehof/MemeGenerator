@@ -5,7 +5,7 @@ This is the new long awaited MemeGenerator2020 App is now here.
 With hot new features, like editable text, pics and a sharing function 
 for spreading your memes around the world.
 
-Fully customizable text: color it, size it and give it a cool font.
+Fully customizable text: move it, color it, size it and give it a cool font.
 
 Up to 10 chooseable meme-templates and add go out in the world 
 for unlimited meme-template potential.
